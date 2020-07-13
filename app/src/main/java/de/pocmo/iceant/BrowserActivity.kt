@@ -65,7 +65,7 @@ class BrowserActivity : AppCompatActivity() {
                 applicationContext,
                 store,
                 DownloadService::class
-            )
+            ),
             fragmentManager = supportFragmentManager
         )
 
