@@ -6,12 +6,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import de.pocmo.iceant.downloads.DownloadService
 import mozilla.components.browser.engine.gecko.GeckoEngine
 import mozilla.components.browser.engine.gecko.fetch.GeckoViewFetchClient
 import mozilla.components.browser.session.SessionManager
 import mozilla.components.browser.state.store.BrowserStore
 import mozilla.components.concept.engine.Engine
 import mozilla.components.concept.fetch.Client
+import mozilla.components.feature.downloads.DownloadMiddleware
 import javax.inject.Singleton
 
 @Module
@@ -25,8 +27,8 @@ class CoreComponentsModule {
 
     @Provides
     @Singleton
-    fun provideStore(): BrowserStore {
-        return BrowserStore()
+    fun provideStore(application: Application): BrowserStore {
+        return BrowserStore(middleware = listOf(DownloadMiddleware(application.applicationContext, DownloadService::class.java)))
     }
 
     @Provides
