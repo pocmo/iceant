@@ -10,6 +10,12 @@
         android:layout_height="wrap_content"
         android:background="#FFdddddd" />
 
+    <mozilla.components.feature.findinpage.view.FindInPageBar
+        android:id="@+id/findInPageBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
+
     <mozilla.components.concept.engine.EngineView
         android:id="@+id/engineView"
         android:layout_width="match_parent"
