@@ -69,7 +69,7 @@ class BrowserFragment : Fragment() {
             view.findViewById<FindInPageBar>(R.id.findInPageBar).visibility = View.GONE
         }
 
-        toolbarIntegration = ToolbarIntegration(store, toolbar, sessionUseCases, searchUseCases) {
+        toolbarIntegration = ToolbarIntegration(requireContext(), store, toolbar, sessionUseCases, searchUseCases) {
             view.findViewById<FindInPageBar>(R.id.findInPageBar).visibility = View.VISIBLE
             findInPageFeature.bind(store.state.selectedTab!!)
         }
