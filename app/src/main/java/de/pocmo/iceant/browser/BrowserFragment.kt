@@ -106,10 +106,6 @@ class BrowserFragment : Fragment() {
             fragmentManager = childFragmentManager
         ), this, view)
 
-        sessionManager.add(
-            Session("https://www.mozilla.org")
-        )
-
         tabsFeature.set(TabsFeature(
             view.findViewById<BrowserTabsTray>(R.id.tabsTray),
             store,
