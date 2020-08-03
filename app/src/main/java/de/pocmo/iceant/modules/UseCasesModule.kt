@@ -12,6 +12,7 @@ import mozilla.components.browser.state.store.BrowserStore
 import mozilla.components.feature.downloads.DownloadsUseCases
 import mozilla.components.feature.search.SearchUseCases
 import mozilla.components.feature.session.SessionUseCases
+import mozilla.components.feature.tabs.TabsUseCases
 import javax.inject.Singleton
 
 @Module
@@ -43,5 +44,14 @@ class UseCasesModule {
         sessionManager: SessionManager
     ): SearchUseCases {
         return SearchUseCases(application, searchEngineManager, sessionManager)
+    }
+
+    @Provides
+    @Singleton
+    fun providesTabsUseCases(
+        store: BrowserStore,
+        sessionManager: SessionManager
+    ): TabsUseCases {
+        return TabsUseCases(store, sessionManager)
     }
 }

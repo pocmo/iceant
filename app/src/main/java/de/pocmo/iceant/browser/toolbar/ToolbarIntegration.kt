@@ -2,6 +2,7 @@ package de.pocmo.iceant.browser.toolbar
 
 import android.content.Context
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.drawerlayout.widget.DrawerLayout
 import de.pocmo.iceant.R
 import mozilla.components.browser.menu.BrowserMenuBuilder
 import mozilla.components.browser.menu.item.SimpleBrowserMenuItem
@@ -19,6 +20,7 @@ class ToolbarIntegration(
     sessionManager: SessionManager,
     store: BrowserStore,
     toolbar: BrowserToolbar,
+    drawer: DrawerLayout,
     sessionUseCases: SessionUseCases,
     private val searchUseCases: SearchUseCases,
     private val findInPage: () -> Unit
@@ -34,7 +36,7 @@ class ToolbarIntegration(
         toolbar,
         sessionManager
     ) {
-        // TODO
+        drawer.open()
     }
 
     init {
