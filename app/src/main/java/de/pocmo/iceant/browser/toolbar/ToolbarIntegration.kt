@@ -5,15 +5,18 @@ import androidx.appcompat.content.res.AppCompatResources
 import de.pocmo.iceant.R
 import mozilla.components.browser.menu.BrowserMenuBuilder
 import mozilla.components.browser.menu.item.SimpleBrowserMenuItem
+import mozilla.components.browser.session.SessionManager
 import mozilla.components.browser.state.store.BrowserStore
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.feature.search.SearchUseCases
 import mozilla.components.feature.session.SessionUseCases
+import mozilla.components.feature.tabs.toolbar.TabsToolbarFeature
 import mozilla.components.feature.toolbar.ToolbarFeature
 import mozilla.components.support.base.feature.LifecycleAwareFeature
 
 class ToolbarIntegration(
     context: Context,
+    sessionManager: SessionManager,
     store: BrowserStore,
     toolbar: BrowserToolbar,
     sessionUseCases: SessionUseCases,
@@ -26,6 +29,13 @@ class ToolbarIntegration(
         sessionUseCases.loadUrl,
         { searchTerms -> searchUseCases.defaultSearch(searchTerms) }
     )
+
+    private val tabsToolbarFeature = TabsToolbarFeature(
+        toolbar,
+        sessionManager
+    ) {
+        // TODO
+    }
 
     init {
         toolbar.display.menuBuilder = BrowserMenuBuilder(

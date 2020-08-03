@@ -4,4 +4,6 @@
     <color name="purple500">#6200EE</color>
     <color name="purple700">#3700B3</color>
     <color name="teal200">#03DAC5</color>
+
+    <color name="mozac_ui_tabcounter_default_tint">#ffffffff</color>
 </resources>
