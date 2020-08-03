@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Ice Ant</string>
+
+    <string name="content_description_close_tab">Close tab</string>
 </resources>

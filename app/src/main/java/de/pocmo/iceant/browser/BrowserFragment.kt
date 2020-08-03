@@ -4,20 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import de.pocmo.iceant.R
+import de.pocmo.iceant.browser.tabstray.TabsTrayIntegration
 import de.pocmo.iceant.browser.toolbar.ToolbarIntegration
 import de.pocmo.iceant.downloads.DownloadService
 import mozilla.components.browser.search.SearchEngineManager
-import mozilla.components.browser.session.Session
 import mozilla.components.browser.session.SessionManager
 import mozilla.components.browser.session.usecases.EngineSessionUseCases
 import mozilla.components.browser.state.selector.selectedTab
 import mozilla.components.browser.state.store.BrowserStore
-import mozilla.components.browser.tabstray.BrowserTabsTray
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.engine.EngineView
 import mozilla.components.feature.downloads.DownloadsFeature
@@ -29,7 +27,6 @@ import mozilla.components.feature.search.SearchUseCases
 import mozilla.components.feature.session.SessionFeature
 import mozilla.components.feature.session.SessionUseCases
 import mozilla.components.feature.tabs.TabsUseCases
-import mozilla.components.feature.tabs.tabstray.TabsFeature
 import mozilla.components.support.base.feature.ViewBoundFeatureWrapper
 import javax.inject.Inject
 
@@ -48,8 +45,8 @@ class BrowserFragment : Fragment() {
     private val sessionFeature = ViewBoundFeatureWrapper<SessionFeature>()
     private val downloadsFeature = ViewBoundFeatureWrapper<DownloadsFeature>()
     private val findInPageFeature = ViewBoundFeatureWrapper<FindInPageFeature>()
-    private val tabsFeature = ViewBoundFeatureWrapper<TabsFeature>()
     private val toolbarIntegration = ViewBoundFeatureWrapper<ToolbarIntegration>()
+    private val tabsTrayIntegration = ViewBoundFeatureWrapper<TabsTrayIntegration>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -106,19 +103,14 @@ class BrowserFragment : Fragment() {
             fragmentManager = childFragmentManager
         ), this, view)
 
-        tabsFeature.set(TabsFeature(
-            view.findViewById<BrowserTabsTray>(R.id.tabsTray),
-            store,
-            tabsUseCases.selectTab,
-            tabsUseCases.removeTab
-        ) {
-            drawer.close()
-        }, this, view)
-
-        view.findViewById<Button>(R.id.addTab).setOnClickListener {
-            tabsUseCases.addTab("about:blank", selectTab = true)
-            drawer.close()
-        }
+        tabsTrayIntegration.set(
+            TabsTrayIntegration(
+                store,
+                view.findViewById(R.id.tabsTray),
+                view.findViewById(R.id.addTab),
+                drawer,
+                tabsUseCases
+            ), this, view)
     }
 
     override fun onRequestPermissionsResult(
