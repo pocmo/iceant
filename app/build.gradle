@@ -46,6 +46,7 @@ dependencies {
     implementation "org.mozilla.components:browser-toolbar:52.0.20200727130115"
     implementation "org.mozilla.components:browser-tabstray:52.0.20200727130115"
     implementation "org.mozilla.components:browser-menu:52.0.20200727130115"
+    implementation "org.mozilla.components:browser-thumbnails:52.0.20200727130115"
 
     implementation "org.mozilla.components:feature-findinpage:52.0.20200727130115"
     implementation "org.mozilla.components:feature-downloads:52.0.20200727130115"

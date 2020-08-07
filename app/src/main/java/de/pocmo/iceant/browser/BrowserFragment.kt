@@ -16,6 +16,8 @@ import mozilla.components.browser.session.SessionManager
 import mozilla.components.browser.session.usecases.EngineSessionUseCases
 import mozilla.components.browser.state.selector.selectedTab
 import mozilla.components.browser.state.store.BrowserStore
+import mozilla.components.browser.thumbnails.BrowserThumbnails
+import mozilla.components.browser.thumbnails.storage.ThumbnailStorage
 import mozilla.components.browser.toolbar.BrowserToolbar
 import mozilla.components.concept.engine.EngineView
 import mozilla.components.feature.downloads.DownloadsFeature
@@ -35,6 +37,7 @@ class BrowserFragment : Fragment() {
     @Inject lateinit var store: BrowserStore
     @Inject lateinit var sessionManager: SessionManager
     @Inject lateinit var searchEngineManager: SearchEngineManager
+    @Inject lateinit var thumbnailStorage: ThumbnailStorage
 
     @Inject lateinit var sessionUseCases: SessionUseCases
     @Inject lateinit var engineUseCases: EngineSessionUseCases
@@ -45,6 +48,7 @@ class BrowserFragment : Fragment() {
     private val sessionFeature = ViewBoundFeatureWrapper<SessionFeature>()
     private val downloadsFeature = ViewBoundFeatureWrapper<DownloadsFeature>()
     private val findInPageFeature = ViewBoundFeatureWrapper<FindInPageFeature>()
+    private val thumbnailsFeature = ViewBoundFeatureWrapper<BrowserThumbnails>()
     private val toolbarIntegration = ViewBoundFeatureWrapper<ToolbarIntegration>()
     private val tabsTrayIntegration = ViewBoundFeatureWrapper<TabsTrayIntegration>()
 
@@ -109,8 +113,19 @@ class BrowserFragment : Fragment() {
                 view.findViewById(R.id.tabsTray),
                 view.findViewById(R.id.addTab),
                 drawer,
-                tabsUseCases
+                tabsUseCases,
+                thumbnailStorage
             ), this, view)
+
+        thumbnailsFeature.set(
+            BrowserThumbnails(
+                requireContext(),
+                view.findViewById<View>(R.id.engineView) as EngineView,
+                store
+            ),
+            this,
+            view
+        )
     }
 
     override fun onRequestPermissionsResult(

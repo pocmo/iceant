@@ -1,7 +1,6 @@
 package de.pocmo.iceant.modules
 
 import android.app.Application
-import android.content.Context
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,6 +15,8 @@ import mozilla.components.browser.session.SessionManager
 import mozilla.components.browser.session.storage.AutoSave
 import mozilla.components.browser.session.storage.SessionStorage
 import mozilla.components.browser.state.store.BrowserStore
+import mozilla.components.browser.thumbnails.ThumbnailsMiddleware
+import mozilla.components.browser.thumbnails.storage.ThumbnailStorage
 import mozilla.components.concept.engine.Engine
 import mozilla.components.concept.fetch.Client
 import mozilla.components.feature.downloads.DownloadMiddleware
@@ -32,10 +33,14 @@ class CoreComponentsModule {
 
     @Provides
     @Singleton
-    fun provideStore(application: Application): BrowserStore {
+    fun provideStore(
+        application: Application,
+        thumbnailStorage: ThumbnailStorage
+    ): BrowserStore {
         return BrowserStore(
             middleware = listOf(
-                DownloadMiddleware(application.applicationContext, DownloadService::class.java)
+                DownloadMiddleware(application.applicationContext, DownloadService::class.java),
+                ThumbnailsMiddleware(thumbnailStorage)
             )
         )
     }
@@ -77,5 +82,11 @@ class CoreComponentsModule {
                 loadAsync(application).await()
             }
         }
+    }
+
+    @Provides
+    @Singleton
+    fun providesThumbnailStorage(application: Application): ThumbnailStorage {
+        return ThumbnailStorage(application)
     }
 }
