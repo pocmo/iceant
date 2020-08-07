@@ -13,6 +13,8 @@ import mozilla.components.browser.engine.gecko.GeckoEngine
 import mozilla.components.browser.engine.gecko.fetch.GeckoViewFetchClient
 import mozilla.components.browser.search.SearchEngineManager
 import mozilla.components.browser.session.SessionManager
+import mozilla.components.browser.session.storage.AutoSave
+import mozilla.components.browser.session.storage.SessionStorage
 import mozilla.components.browser.state.store.BrowserStore
 import mozilla.components.concept.engine.Engine
 import mozilla.components.concept.fetch.Client
@@ -40,8 +42,25 @@ class CoreComponentsModule {
 
     @Provides
     @Singleton
-    fun providesSessionManager(engine: Engine, store: BrowserStore): SessionManager {
-        return SessionManager(engine, store)
+    fun provideSessionStorage(application: Application, engine: Engine): SessionStorage {
+        return SessionStorage(application, engine)
+    }
+
+    @Provides
+    @Singleton
+    fun providesSessionManager(
+        engine: Engine,
+        store: BrowserStore,
+        sessionStorage: SessionStorage
+    ): SessionManager {
+        return SessionManager(engine, store).apply {
+            sessionStorage.restore()?.let { restore(it) }
+
+            AutoSave(this, sessionStorage, 5000)
+                .whenSessionsChange()
+                .whenGoingToBackground()
+                .periodicallyInForeground()
+        }
     }
 
     @Provides
