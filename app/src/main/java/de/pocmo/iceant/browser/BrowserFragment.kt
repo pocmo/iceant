@@ -19,6 +19,7 @@ import mozilla.components.browser.state.store.BrowserStore
 import mozilla.components.browser.thumbnails.BrowserThumbnails
 import mozilla.components.browser.thumbnails.storage.ThumbnailStorage
 import mozilla.components.browser.toolbar.BrowserToolbar
+import mozilla.components.concept.engine.Engine
 import mozilla.components.concept.engine.EngineView
 import mozilla.components.feature.downloads.DownloadsFeature
 import mozilla.components.feature.downloads.DownloadsUseCases
@@ -35,6 +36,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class BrowserFragment : Fragment() {
     @Inject lateinit var store: BrowserStore
+    @Inject lateinit var engine: Engine
     @Inject lateinit var sessionManager: SessionManager
     @Inject lateinit var searchEngineManager: SearchEngineManager
     @Inject lateinit var thumbnailStorage: ThumbnailStorage
@@ -81,6 +83,7 @@ class BrowserFragment : Fragment() {
 
         toolbarIntegration.set(ToolbarIntegration(
             requireContext(),
+            engine,
             sessionManager,
             store,
             toolbar,

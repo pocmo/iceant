@@ -40,6 +40,7 @@ dependencies {
     implementation "org.mozilla.components:concept-fetch:52.0.20200727130115"
 
     implementation "org.mozilla.components:browser-engine-gecko-nightly:52.0.20200727130115"
+    implementation "org.mozilla.components:browser-domains:52.0.20200727130115"
     implementation "org.mozilla.components:browser-session:52.0.20200727130115"
     implementation "org.mozilla.components:browser-search:52.0.20200727130115"
     implementation "org.mozilla.components:browser-state:52.0.20200727130115"
