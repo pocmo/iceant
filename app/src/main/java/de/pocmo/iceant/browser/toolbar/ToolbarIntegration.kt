@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.lifecycle.LifecycleOwner
 import de.pocmo.iceant.R
 import mozilla.components.browser.domains.autocomplete.ShippedDomainsProvider
 import mozilla.components.browser.menu.BrowserMenuBuilder
@@ -21,6 +22,7 @@ import mozilla.components.support.base.feature.LifecycleAwareFeature
 
 class ToolbarIntegration(
     context: Context,
+    lifecycleOwner: LifecycleOwner,
     engine: Engine,
     sessionManager: SessionManager,
     store: BrowserStore,
@@ -43,10 +45,10 @@ class ToolbarIntegration(
 
     private val tabsToolbarFeature = TabsToolbarFeature(
         toolbar,
-        sessionManager
-    ) {
-        drawer.open()
-    }
+        store,
+        lifecycleOwner = lifecycleOwner,
+        showTabs = { drawer.open() }
+    )
 
     init {
         toolbar.display.menuBuilder = BrowserMenuBuilder(

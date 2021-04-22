@@ -36,28 +36,30 @@ android {
 }
 
 dependencies {
-    implementation "org.mozilla.components:concept-engine:52.0.20200727130115"
-    implementation "org.mozilla.components:concept-fetch:52.0.20200727130115"
+    implementation "org.mozilla.components:concept-engine:$mozilla_android_components"
+    implementation "org.mozilla.components:concept-fetch:$mozilla_android_components"
 
-    implementation "org.mozilla.components:browser-engine-gecko-nightly:52.0.20200727130115"
-    implementation "org.mozilla.components:browser-domains:52.0.20200727130115"
-    implementation "org.mozilla.components:browser-session:52.0.20200727130115"
-    implementation "org.mozilla.components:browser-search:52.0.20200727130115"
-    implementation "org.mozilla.components:browser-state:52.0.20200727130115"
-    implementation "org.mozilla.components:browser-toolbar:52.0.20200727130115"
-    implementation "org.mozilla.components:browser-tabstray:52.0.20200727130115"
-    implementation "org.mozilla.components:browser-menu:52.0.20200727130115"
-    implementation "org.mozilla.components:browser-thumbnails:52.0.20200727130115"
+    implementation "org.mozilla.components:browser-engine-gecko-nightly:$mozilla_android_components"
+    implementation "org.mozilla.components:browser-domains:$mozilla_android_components"
+    implementation "org.mozilla.components:browser-session:$mozilla_android_components"
+    implementation "org.mozilla.components:browser-session-storage:$mozilla_android_components"
+    implementation "org.mozilla.components:browser-search:$mozilla_android_components"
+    implementation "org.mozilla.components:browser-state:$mozilla_android_components"
+    implementation "org.mozilla.components:browser-toolbar:$mozilla_android_components"
+    implementation "org.mozilla.components:browser-tabstray:$mozilla_android_components"
+    implementation "org.mozilla.components:browser-menu:$mozilla_android_components"
+    implementation "org.mozilla.components:browser-thumbnails:$mozilla_android_components"
 
-    implementation "org.mozilla.components:feature-findinpage:52.0.20200727130115"
-    implementation "org.mozilla.components:feature-downloads:52.0.20200727130115"
-    implementation "org.mozilla.components:feature-session:52.0.20200727130115"
-    implementation "org.mozilla.components:feature-search:52.0.20200727130115"
-    implementation "org.mozilla.components:feature-toolbar:52.0.20200727130115"
-    implementation "org.mozilla.components:feature-tabs:52.0.20200727130115"
-    implementation "org.mozilla.components:ui-icons:52.0.20200727130115"
+    implementation "org.mozilla.components:feature-findinpage:$mozilla_android_components"
+    implementation "org.mozilla.components:feature-downloads:$mozilla_android_components"
+    implementation "org.mozilla.components:feature-session:$mozilla_android_components"
+    implementation "org.mozilla.components:feature-search:$mozilla_android_components"
+    implementation "org.mozilla.components:feature-toolbar:$mozilla_android_components"
+    implementation "org.mozilla.components:feature-tabs:$mozilla_android_components"
+    implementation "org.mozilla.components:ui-icons:$mozilla_android_components"
+    implementation "org.mozilla.components:ui-tabcounter:$mozilla_android_components"
 
-    implementation "org.mozilla.components:support-images:52.0.20200727130115"
+    implementation "org.mozilla.components:support-images:$mozilla_android_components"
 
     implementation 'com.google.dagger:hilt-android:2.28-alpha'
     kapt 'com.google.dagger:hilt-android-compiler:2.28-alpha'

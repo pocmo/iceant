@@ -6,8 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
 import mozilla.components.browser.search.SearchEngineManager
+import mozilla.components.browser.search.ext.toDefaultSearchEngineProvider
 import mozilla.components.browser.session.SessionManager
-import mozilla.components.browser.session.usecases.EngineSessionUseCases
 import mozilla.components.browser.state.store.BrowserStore
 import mozilla.components.feature.downloads.DownloadsUseCases
 import mozilla.components.feature.search.SearchUseCases
@@ -20,14 +20,8 @@ import javax.inject.Singleton
 class UseCasesModule {
     @Provides
     @Singleton
-    fun providesSessionUseCases(sessionManager: SessionManager): SessionUseCases {
-        return SessionUseCases(sessionManager)
-    }
-
-    @Provides
-    @Singleton
-    fun providesEngineUseCases(sessionManager: SessionManager): EngineSessionUseCases {
-        return EngineSessionUseCases(sessionManager)
+    fun providesSessionUseCases(store: BrowserStore, sessionManager: SessionManager): SessionUseCases {
+        return SessionUseCases(store, sessionManager)
     }
 
     @Provides
@@ -41,9 +35,10 @@ class UseCasesModule {
     fun providesSearchUseCases(
         application: Application,
         searchEngineManager: SearchEngineManager,
-        sessionManager: SessionManager
+        store: BrowserStore,
+        tabsUseCases: TabsUseCases
     ): SearchUseCases {
-        return SearchUseCases(application, searchEngineManager, sessionManager)
+        return SearchUseCases(store, searchEngineManager.toDefaultSearchEngineProvider(application), tabsUseCases)
     }
 
     @Provides

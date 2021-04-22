@@ -11,7 +11,9 @@ import kotlinx.coroutines.launch
 import mozilla.components.browser.engine.gecko.GeckoEngine
 import mozilla.components.browser.engine.gecko.fetch.GeckoViewFetchClient
 import mozilla.components.browser.search.SearchEngineManager
+import mozilla.components.browser.session.Session
 import mozilla.components.browser.session.SessionManager
+import mozilla.components.browser.session.engine.EngineMiddleware
 import mozilla.components.browser.session.storage.AutoSave
 import mozilla.components.browser.session.storage.SessionStorage
 import mozilla.components.browser.state.store.BrowserStore
@@ -21,6 +23,8 @@ import mozilla.components.concept.engine.Engine
 import mozilla.components.concept.fetch.Client
 import mozilla.components.feature.downloads.DownloadMiddleware
 import javax.inject.Singleton
+
+private lateinit var sessionLookup: (String) -> Session?
 
 @Module
 @InstallIn(ApplicationComponent::class)
@@ -35,13 +39,14 @@ class CoreComponentsModule {
     @Singleton
     fun provideStore(
         application: Application,
+        engine: Engine,
         thumbnailStorage: ThumbnailStorage
     ): BrowserStore {
         return BrowserStore(
             middleware = listOf(
                 DownloadMiddleware(application.applicationContext, DownloadService::class.java),
-                ThumbnailsMiddleware(thumbnailStorage)
-            )
+                ThumbnailsMiddleware(thumbnailStorage),
+            ) + EngineMiddleware.create(engine, { id -> sessionLookup.invoke(id) })
         )
     }
 
@@ -58,10 +63,14 @@ class CoreComponentsModule {
         store: BrowserStore,
         sessionStorage: SessionStorage
     ): SessionManager {
-        return SessionManager(engine, store).apply {
-            sessionStorage.restore()?.let { restore(it) }
+        return SessionManager(engine, store).also { sessionManger ->
+            sessionLookup = { tab -> sessionManger.findSessionById(tab) }
 
-            AutoSave(this, sessionStorage, 5000)
+            sessionStorage.restore()?.let {
+                sessionManger.restore(it.tabs, it.selectedTabId)
+            }
+
+            AutoSave(store, sessionStorage, 5000)
                 .whenSessionsChange()
                 .whenGoingToBackground()
                 .periodicallyInForeground()

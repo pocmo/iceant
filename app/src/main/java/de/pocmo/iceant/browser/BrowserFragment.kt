@@ -13,7 +13,6 @@ import de.pocmo.iceant.browser.toolbar.ToolbarIntegration
 import de.pocmo.iceant.downloads.DownloadService
 import mozilla.components.browser.search.SearchEngineManager
 import mozilla.components.browser.session.SessionManager
-import mozilla.components.browser.session.usecases.EngineSessionUseCases
 import mozilla.components.browser.state.selector.selectedTab
 import mozilla.components.browser.state.store.BrowserStore
 import mozilla.components.browser.thumbnails.BrowserThumbnails
@@ -42,7 +41,6 @@ class BrowserFragment : Fragment() {
     @Inject lateinit var thumbnailStorage: ThumbnailStorage
 
     @Inject lateinit var sessionUseCases: SessionUseCases
-    @Inject lateinit var engineUseCases: EngineSessionUseCases
     @Inject lateinit var downloadUseCases: DownloadsUseCases
     @Inject lateinit var searchUseCases: SearchUseCases
     @Inject lateinit var tabsUseCases: TabsUseCases
@@ -66,7 +64,6 @@ class BrowserFragment : Fragment() {
         sessionFeature.set(SessionFeature(
             store,
             sessionUseCases.goBack,
-            engineUseCases,
             view.findViewById<View>(R.id.engineView) as EngineView
         ), this, view)
 
@@ -83,6 +80,7 @@ class BrowserFragment : Fragment() {
 
         toolbarIntegration.set(ToolbarIntegration(
             requireContext(),
+            this,
             engine,
             sessionManager,
             store,
