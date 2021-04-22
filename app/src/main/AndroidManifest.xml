@@ -14,7 +14,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IceAnt" >
 
-        <activity android:name=".BrowserActivity">
+        <activity android:name=".BrowserActivity" android:taskAffinity=":browser">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".BrowserComposeActivity" android:label="Compose" android:taskAffinity=":compose">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
